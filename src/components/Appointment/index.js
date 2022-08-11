@@ -6,19 +6,12 @@ import Empty from 'components/Appointment/Empty.js'
 
 const Appointment = (props) => {
   return (
-    <>
-      <Header time='5pm'/>
-
-     {props.interview && 
-     <Show
-      student = {props.student}
-      interviewer={props.interview.interviewer}
-      onDelete = {props.onDelete}
-      onEdit={props.onEdit}
-     />}
-     {!props.interview && <Empty onClick={props.onAdd}/>}
-     
-    </>
+    <article className='appointment'>
+      <Header time={props.time}/>
+      {props.interview 
+      ? <Show student={props.interview.student} interviewer={props.interview.interviewer}/> 
+      : <Empty />}
+    </article>
   );
 };
 
