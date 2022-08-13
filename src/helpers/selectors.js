@@ -1,22 +1,12 @@
-import React from 'react';
-
-const getAppointmentsForDay = (state, day) => {
-  const appointments = [];
-
-  for (let checkDay of state.days) {
-    if (checkDay.name === day) {
-      for (let appointment of checkDay.appointments) {
-        appointments.push(state.appointments[appointment]);
-      }
+export function getAppointmentsForDay(state, day) {
+  let appointments = [];
+  let output = [];
+  appointments = state.days.filter(appointment => appointment.name === day)
+  if (appointments.length > 0) {
+    appointments = appointments[0].appointments;
+    for (const i of appointments) {
+      output.push(state.appointments[i]);
     }
   }
-  return appointments;
-};
-
-export default getAppointmentsForDay;
-
-// () needs to return an array
-// () returns an array with  length mathching the number of appointments for that day
-// () returns an array containing correct appointment objects
-// () returns an empt array when the days data is empty
-// () reutnrs an empty array when the day is not found
+  return output;
+}
