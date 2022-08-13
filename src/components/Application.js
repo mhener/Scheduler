@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { useEffect, useState } from 'react';
 
 import 'components/Application.scss';
 import DayList from 'components/DayList.js';
 import Appointment from 'components/Appointment';
+import axios from 'axios';
 
 const appointments = {
   1: {
@@ -45,12 +45,19 @@ const appointments = {
 };
 
 export default function Application(props) {
+  const [day, setDay] = useState('Monday');
   const [days, setDays] = useState([]);
+  console.log(days);
 
   useEffect(() => {
+    const daysURL = '/api/days';
+    console.log(daysURL);
     axios
-      .get('/api/days')
-      .then((response) => console.log(response))
+      .get(daysURL)
+      .then((res) => {
+        console.log(res.data);
+        setDays([...res.data]);
+      })
       .catch((err) => console.log(err));
   }, []);
 
