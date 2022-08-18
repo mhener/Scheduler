@@ -1,22 +1,29 @@
-import { useState } from '@storybook/addons';
-
+import { useState } from 'react';
 
 const useVisualMode = (initial) => {
   const [mode, setMode] = useState(initial);
   const [history, setHistory] = useState([initial]);
 
-  const transition = (mode) => {
-    return (
-      setMode(mode)
-    );
-  }
-  const back = () => {
-    if (history.length > 1 ) {
-      setHistory((prev) => prev.pop());
+  const transition = (newMode, replace = false) => {
+    setMode(newMode);
+    if (replace) {
+      const replaceLastItem = [...history];
+      replaceLastItem[replaceLastItem.length - 1] = newMode;
+      setHistory(replaceLastItem);
+    } else {
+      setHistory((prev) => [...prev, newMode]);
     }
- 
-  }
-  return { mode: mode, transition, back };
+  };
+
+  const back = () => {
+    if (history.length > 1) {
+      let popped = [...history];
+      popped.pop();
+      setHistory(popped);
+      setMode(popped[popped.length - 1]);
+    }
+  };
+  return { mode, transition, back };
 };
 
 export default useVisualMode;
