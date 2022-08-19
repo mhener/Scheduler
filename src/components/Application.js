@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
-
 import 'components/Application.scss';
 import DayList from 'components/DayList.js';
 import Appointment from 'components/Appointment';
 import axios from 'axios';
-import { getAppointmentsForDay } from 'helpers/selectors';
-import { getInterview } from 'helpers/selectors';
-import { getInterviewersForDay } from 'helpers/selectors';
+import {
+  getAppointmentsForDay,
+  getInterview,
+  getInterviewersForDay,
+} from 'helpers/selectors';
 
 export default function Application(props) {
   const [state, setState] = useState({
@@ -16,10 +17,35 @@ export default function Application(props) {
     interviewers: {},
   });
 
+  const bookInterview = (id, interview) => {
+    console.log(id, interview);
+    const appointment = {
+      ...state.appointments[id],
+      interview: { ...interview },
+    };
+    const appointments = {
+      ...state.appointments,
+      [id]: appointment,
+    };
+    setState({
+      ...state,
+      appointments,
+    });
+  };
+
+  const save = (name, interviewer) => {
+    const interview = {
+      student: name,
+      interviewer,
+    };
+  };
+
+  const cancelInterview = () => {};
+
   const appointments = getAppointmentsForDay(state, state.day);
   const schedule = appointments.map((appointment) => {
     const interview = getInterview(state, appointment.interview);
-    const interviewers = getInterviewersForDay(state, appointment.interviewers);
+    const interviewers = getInterviewersForDay(state, state.day);
 
     return (
       <Appointment
@@ -28,6 +54,7 @@ export default function Application(props) {
         time={appointment.time}
         interview={interview}
         interviewers={interviewers}
+        bookInterview={bookInterview}
       />
     );
   });
@@ -73,7 +100,7 @@ export default function Application(props) {
       </section>
       <section className='schedule'>
         {schedule}
-        <Appointment key='last' time='5pm' />
+        <Appointment key='last' time='5pm' bookInterview={bookInterview} />
       </section>
     </main>
   );

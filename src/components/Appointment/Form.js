@@ -1,15 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
 import InterviewerList from 'components/InterviewerList';
 import Button from 'components/Button';
-import { useState } from 'react';
 
 const Form = (props) => {
   const [student, setStudent] = useState(props.student || '');
-  const [interviewer, setInterviewer] = useState(props.interviewer || null);
+  const [interviewer, setInterviewer] = useState(
+    props.interviewer ? props.interviewer.id : null
+  );
+  const [error, setError] = useState('');
 
   const reset = () => {
     setStudent('');
     setInterviewer(null);
+    setError('');
   };
 
   const cancel = () => {
@@ -17,10 +20,24 @@ const Form = (props) => {
     props.onCancel();
   };
 
+  function validate() {
+    if (student === '') {
+      setError('Student name cannot be blank');
+      return;
+    }
+    if (interviewer === null) {
+      setError('Please select an interviewer');
+      return;
+    }
+
+    setError('');
+    props.onSave(student, interviewer);
+  }
+
   return (
     <main className='appointment__card appointment__card--create'>
       <section className='appointment__card-left'>
-        <form autoComplete='off'>
+        <form autoComplete='off' onSubmit={(event) => event.preventDefault()}>
           <input
             className='appointment__create-input text--semi-bold'
             name={props.name}
@@ -30,11 +47,6 @@ const Form = (props) => {
               setStudent(event.target.value);
             }}
             value={student}
-            onSubmit={(event) => event.preventDefault()}
-            /*
-              This must be a controlled component
-              your code goes here
-            */
           />
         </form>
         <InterviewerList
@@ -45,10 +57,10 @@ const Form = (props) => {
       </section>
       <section className='appointment__card-right'>
         <section className='appointment__actions'>
-          <Button danger onClick={(event) => cancel()}>
+          <Button danger onClick={cancel}>
             Cancel
           </Button>
-          <Button confirm onClick={props.onSave}>
+          <Button confirm onClick={() => validate()}>
             Save
           </Button>
         </section>
