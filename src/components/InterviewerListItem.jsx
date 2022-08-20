@@ -8,9 +8,6 @@ const InterviewerListItem = (props) => {
    'interviewers__item--selected': props.selected 
   })
 
-  const InterviewerListItemImageClass = classNames ('interviewers__item-image', {
-    'interviewers__item-image--selected': props.selected
-  })
   return (
     <li 
       className={InterviewerListItemClass}

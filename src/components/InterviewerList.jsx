@@ -3,21 +3,21 @@ import 'components/InterviewerList.scss';
 import InterviewerListItem from './InterviewerListItem';
 
 const InterviewerList = (props) => {
-  const interviewers = props.interviewers.map((interviewerObj) => {
+  const interviewersList = props.interviewers.map((interviewer) => {
     return (
       <InterviewerListItem 
-        key={interviewerObj.id}
-        name={interviewerObj.name}
-        avatar={interviewerObj.avatar}
-        selected={interviewerObj.id === props.value}
-        setInterviewer={() => props.onChange(interviewerObj.id)}
+        key={interviewer.id}
+        name={interviewer.name}
+        avatar={interviewer.avatar}
+        selected={interviewer.id === props.value}
+        setInterviewer={() => props.onChange(interviewer.id)}
       />
     )
   })
   return (
     <section className="interviewers">
       <h4 className="interviewers__header text--light">Interviewers</h4>
-      <ul className="interviewers__list">{interviewers}</ul>
+      <ul className="interviewers__list">{interviewersList}</ul>
     </section> 
   )
 }

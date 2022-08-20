@@ -4,15 +4,12 @@ import Button from 'components/Button';
 
 const Form = (props) => {
   const [student, setStudent] = useState(props.student || '');
-  const [interviewer, setInterviewer] = useState(
-    props.interviewer ? props.interviewer.id : null
-  );
+  const [interviewer, setInterviewer] = useState(props.interviewer || null);
   const [error, setError] = useState('');
 
   const reset = () => {
     setStudent('');
     setInterviewer(null);
-    setError('');
   };
 
   const cancel = () => {
@@ -29,7 +26,6 @@ const Form = (props) => {
       setError('Please select an interviewer');
       return;
     }
-
     setError('');
     props.onSave(student, interviewer);
   }
@@ -40,7 +36,7 @@ const Form = (props) => {
         <form autoComplete='off' onSubmit={(event) => event.preventDefault()}>
           <input
             className='appointment__create-input text--semi-bold'
-            name={props.name}
+            name='name'
             type='text'
             placeholder='Enter Student Name'
             onChange={(event) => {
@@ -52,7 +48,7 @@ const Form = (props) => {
         <InterviewerList
           interviewers={props.interviewers}
           value={interviewer}
-          onChange={setInterviewer}
+          onChange={(interviewer) => setInterviewer(interviewer)}
         />
       </section>
       <section className='appointment__card-right'>
@@ -60,7 +56,7 @@ const Form = (props) => {
           <Button danger onClick={cancel}>
             Cancel
           </Button>
-          <Button confirm onClick={() => validate()}>
+          <Button confirm onClick={(e) => validate()}>
             Save
           </Button>
         </section>
