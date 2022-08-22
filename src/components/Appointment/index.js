@@ -71,8 +71,6 @@ const Appointment = (props) => {
       )}
       {mode === CREATE && (
         <Form
-          // name={props.name}
-          // value={props.value}
           bookInterview={props.bookInterview}
           interviewers={props.interviewers}
           onSave={save}
@@ -95,7 +93,6 @@ const Appointment = (props) => {
           interviewers={props.interviewers}
           onSave={save}
           onCancel={() => back(SHOW)}
-          // onCancel={back}
         />
       )}
       {mode === ERROR_SAVE && (
@@ -103,14 +100,12 @@ const Appointment = (props) => {
           message='Could not save appointment.'
           onClose={() => back(EMPTY)}
         />
-        //onClose={back}
       )}
       {mode === ERROR_DELETE && (
         <Error
           message='Could not delete appointment.'
           onClose={() => back(EMPTY)}
         />
-        // onClose={back}
       )}
     </article>
   );
