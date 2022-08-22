@@ -39,9 +39,9 @@ const useApplicationData = () => {
     ]).then((all) => {
       setState((prev) => ({
         ...prev,
-        days: all[0].data,
-        appointments: all[1].data,
-        interviewers: all[2].data,
+        days: [...all[0].data],
+        appointments: { ...all[1].data },
+        interviewers: { ...all[2].data },
       }));
     });
   }, []);
@@ -59,10 +59,11 @@ const useApplicationData = () => {
     };
 
     return axios
-      .put(appointmentsURL, appointment)
+      .put(appointmentsURL, { interview })
       .then(() => {
+        const newState = { ...state, appointments };
         const days = updateSpots(state, appointments);
-        setState((prev) => ({ ...prev, appointments, days }));
+        setState({ ...newState, days });
       })
       .catch((err) => {
         console.log(err);
@@ -84,8 +85,9 @@ const useApplicationData = () => {
     return axios
       .delete(appointmentsURL)
       .then(() => {
-        const days = updateSpots(state, appointments);
-        setState((prev) => ({ ...prev, appointments, days }));
+        const newState = { ...state, appointments };
+        const days = updateSpots(newState);
+        setState({ ...newState, days });
       })
       .catch((err) => console.log(err));
   };

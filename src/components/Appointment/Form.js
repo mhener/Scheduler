@@ -7,16 +7,20 @@ const Form = (props) => {
   const [interviewer, setInterviewer] = useState(props.interviewer || null);
   const [error, setError] = useState('');
 
+  // Clear the form:
   const reset = () => {
     setStudent('');
     setInterviewer(null);
   };
 
+  // Run reset () when cancel button is clicked:
   const cancel = () => {
     reset();
     props.onCancel();
+    setError('');
   };
 
+  // Validation to ensure a student name is always entered and an interviewer is always selected:
   function validate() {
     if (student === '') {
       setError('Student name cannot be blank');
@@ -50,7 +54,7 @@ const Form = (props) => {
         <InterviewerList
           interviewers={props.interviewers}
           value={interviewer}
-          onChange={(interviewer) => setInterviewer(interviewer)}
+          onChange={(e) => setInterviewer(e)}
         />
       </section>
       <section className='appointment__card-right'>
