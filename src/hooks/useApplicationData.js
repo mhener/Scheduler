@@ -28,6 +28,7 @@ const useApplicationData = () => {
     return days;
   };
 
+  // Calling on scheduler-api:
   useEffect(() => {
     const daysURL = '/api/days';
     const appointmentsURL = '/api/appointments';
@@ -38,6 +39,7 @@ const useApplicationData = () => {
       axios.get(appointmentsURL),
       axios.get(interviewersURL),
     ]).then((all) => {
+      console.log(all);
       setState((prev) => ({
         ...prev,
         days: all[0].data,
@@ -61,7 +63,7 @@ const useApplicationData = () => {
     };
 
     return axios
-      .put(appointmentsURL, { interview })
+      .put(appointmentsURL, appointment)
       .then(() => {
         const newState = { ...state, appointments };
         const days = updateSpots(state, appointments);
