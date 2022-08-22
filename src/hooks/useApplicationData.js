@@ -39,7 +39,6 @@ const useApplicationData = () => {
       axios.get(appointmentsURL),
       axios.get(interviewersURL),
     ]).then((all) => {
-      console.log(all);
       setState((prev) => ({
         ...prev,
         days: all[0].data,

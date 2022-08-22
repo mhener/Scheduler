@@ -80,4 +80,19 @@ export default {
       });
     }
   }),
+
+  put: jest.fn(() => {
+    return Promise.resolve({
+      status: 204,
+      statusText: 'No Content',
+      data: fixtures.days,
+    });
+  }),
+  delete: jest.fn(() => {
+    return Promise.resolve({
+      status: 200,
+      statusText: 'OK',
+      data: null,
+    });
+  }),
 };
