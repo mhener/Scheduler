@@ -1,3 +1,4 @@
+// Returns the appointments available for the day:
 export function getAppointmentsForDay(state, day) {
   let appointments = [];
   let output = [];
@@ -11,6 +12,7 @@ export function getAppointmentsForDay(state, day) {
   return output;
 }
 
+// Returns the interview information for an appointment
 export function getInterview(state, interview) {
   if (!interview) {
     return null;
@@ -22,6 +24,7 @@ export function getInterview(state, interview) {
   return output;
 }
 
+// Returns the interviewers available for a specific day:
 export function getInterviewersForDay(state, day) {
   let interviewers = [];
   let output = [];

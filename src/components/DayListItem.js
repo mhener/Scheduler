@@ -8,6 +8,7 @@ export default function DayListItem(props) {
     'day-list__item--full': !props.spots,
   });
 
+  // Changes based on the number of spots available:
   const formatSpots = (spots) => {
     if (!spots) {
       return `no spots remaining`;
@@ -20,15 +21,16 @@ export default function DayListItem(props) {
     return `${spots} spots remaining`;
   };
 
-  const availabilityMessage = formatSpots(props.spots);
+  const spotsAvailable = formatSpots(props.spots);
   return (
     <li
       className={dayClass}
       onClick={() => props.setDay(props.name)}
       selected={props.selected}
+      data-testid='day'
     >
       <h2 className='text--regular'>{props.name}</h2>
-      <h3 className='text--light'>{availabilityMessage}</h3>
+      <h3 className='text--light'>{spotsAvailable}</h3>
     </li>
   );
 }

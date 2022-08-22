@@ -1,5 +1,6 @@
 import { useState } from 'react';
 
+// Function that transitions between different modes:
 const useVisualMode = (initial) => {
   const [mode, setMode] = useState(initial);
   const [history, setHistory] = useState([initial]);
@@ -15,6 +16,7 @@ const useVisualMode = (initial) => {
     }
   };
 
+  // Function that returns to the previous mode in the history:
   const back = () => {
     if (history.length > 1) {
       let popped = [...history];

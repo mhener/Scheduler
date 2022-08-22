@@ -9,12 +9,12 @@ import {
 } from 'helpers/selectors';
 import useApplicationData from 'hooks/useApplicationData';
 
-export default function Application(props) {
+export default function Application() {
   const { state, setDay, bookInterview, cancelInterview } =
     useApplicationData();
 
-  const appointments = getAppointmentsForDay(state, state.day);
-  const allAppointments = appointments.map((appointment) => {
+  const dailyAppointments = getAppointmentsForDay(state, state.day);
+  const schedule = dailyAppointments.map((appointment) => {
     const interview = getInterview(state, appointment.interview);
     const interviewers = getInterviewersForDay(state, state.day);
     return (
@@ -40,7 +40,7 @@ export default function Application(props) {
         />
         <hr className='sidebar__separator sidebar--centered' />
         <nav className='sidebar__menu'>
-          <DayList days={state.days} value={state.day} setDay={setDay} />
+          <DayList days={state.days} value={state.day} onChange={setDay} />
         </nav>
         <img
           className='sidebar__lhl sidebar--centered'
@@ -49,7 +49,7 @@ export default function Application(props) {
         />
       </section>
       <section className='schedule'>
-        {allAppointments}
+        {schedule}
         <Appointment key='last' time='5pm' />
       </section>
     </main>
