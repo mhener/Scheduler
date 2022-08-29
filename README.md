@@ -17,6 +17,11 @@ Interview Scheduler is a React based web application that tracks students' inter
 * Cypress
 
 # Getting Started
+
+## Setup Scheduler API:
+
+Clone [Scheduler Api](https://github.com/lighthouse-labs/scheduler-api) and follow the setup instructions for PostgreSQL server.
+
 ## Setup Interview Scheduler:
 
 Install dependencies with `npm install`.
