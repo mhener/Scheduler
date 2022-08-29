@@ -1,4 +1,5 @@
 describe('Appointment', () => {
+  // Reset DB before each test:
   beforeEach(() => {
     cy.request('GET', '/api/debug/reset');
     cy.visit('/');

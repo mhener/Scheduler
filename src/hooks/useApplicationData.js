@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
+// Helper Function for our application's Data:
+
 const useApplicationData = () => {
   const [state, setState] = useState({
     day: 'Monday',
@@ -56,16 +58,17 @@ const useApplicationData = () => {
       ...state.appointments[id],
       interview: { ...interview },
     };
+
     const appointments = {
       ...state.appointments,
       [id]: appointment,
     };
 
     return axios
-      .put(appointmentsURL, appointment)
+      .put(appointmentsURL, { interview }) // or appointment for second argument?
       .then(() => {
         const newState = { ...state, appointments };
-        const days = updateSpots(state, appointments);
+        const days = updateSpots(newState); // state, appointments for 2nd argument
         setState({ ...newState, days });
       })
       .catch((err) => {
