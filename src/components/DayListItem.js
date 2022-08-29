@@ -11,7 +11,7 @@ export default function DayListItem(props) {
   // Changes based on the number of spots available:
   const formatSpots = (spots) => {
     if (!spots) {
-      return `no spots remaining`;
+      return `No spots remaining`;
     }
 
     if (spots === 1) {
@@ -22,6 +22,7 @@ export default function DayListItem(props) {
   };
 
   const spotsAvailable = formatSpots(props.spots);
+
   return (
     <li
       className={dayClass}

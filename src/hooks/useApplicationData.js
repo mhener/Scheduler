@@ -1,9 +1,8 @@
-import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useState, useEffect } from 'react';
 
-// Helper Function for our application's Data:
-
-const useApplicationData = () => {
+// State of Application (data):
+function useApplicationData() {
   const [state, setState] = useState({
     day: 'Monday',
     days: [],
@@ -13,29 +12,11 @@ const useApplicationData = () => {
 
   const setDay = (day) => setState({ ...state, day });
 
-  // Function used to update the spots available for booking an appointment:
-  const updateSpots = (state, appointments) => {
-    const dayObj = state.days.find((d) => d.name === state.day);
-
-    let spots = 0;
-    for (const id of dayObj.appointments) {
-      const appointment = appointments[id];
-      if (!appointment.interview) {
-        spots++;
-      }
-    }
-    const day = { ...dayObj, spots };
-    const days = state.days.map((d) => (d.name === state.day ? day : d));
-
-    return days;
-  };
-
-  // Calling on scheduler-api:
+  // Render all appointments on first load
   useEffect(() => {
-    const daysURL = '/api/days';
+    const daysURL = `/api/days`;
     const appointmentsURL = '/api/appointments';
-    const interviewersURL = 'api/interviewers';
-
+    const interviewersURL = '/api/interviewers';
     Promise.all([
       axios.get(daysURL),
       axios.get(appointmentsURL),
@@ -43,14 +24,31 @@ const useApplicationData = () => {
     ]).then((all) => {
       setState((prev) => ({
         ...prev,
-        days: all[0].data,
-        appointments: all[1].data,
-        interviewers: all[2].data,
+        days: [...all[0].data],
+        appointments: { ...all[1].data },
+        interviewers: { ...all[2].data },
       }));
     });
   }, []);
 
-  // Function saves new appointments to the database:
+  // Function used to update the spots available for booking an appointment:
+  const updateSpots = (state) => {
+    const days = [...state.days];
+    let spots = 0;
+    for (let day of days) {
+      if (day.name === state.day) {
+        for (let appointment of day.appointments) {
+          if (state.appointments[appointment].interview === null) {
+            spots++;
+          }
+        }
+        day.spots = spots;
+      }
+    }
+    return days;
+  };
+
+  // Function to add appointment to the DB:
   const bookInterview = (id, interview) => {
     const appointmentsURL = `/api/appointments/${id}`;
 
@@ -63,23 +61,16 @@ const useApplicationData = () => {
       ...state.appointments,
       [id]: appointment,
     };
-
-    return axios
-      .put(appointmentsURL, { interview }) // or appointment for second argument?
-      .then(() => {
-        const newState = { ...state, appointments };
-        const days = updateSpots(newState); // state, appointments for 2nd argument
-        setState({ ...newState, days });
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    return axios.put(appointmentsURL, { interview }).then(() => {
+      const newState = { ...state, appointments };
+      const days = updateSpots(newState);
+      setState({ ...newState, days });
+    });
   };
 
-  // Function deletes an appointment from the database:
+  // Function to delete an appointment from the DB:
   const cancelInterview = (id) => {
     const appointmentsURL = `/api/appointments/${id}`;
-
     const appointment = {
       ...state.appointments[id],
       interview: null,
@@ -88,18 +79,19 @@ const useApplicationData = () => {
       ...state.appointments,
       [id]: appointment,
     };
-
-    return axios
-      .delete(appointmentsURL)
-      .then(() => {
-        const newState = { ...state, appointments };
-        const days = updateSpots(newState);
-        setState({ ...newState, days });
-      })
-      .catch((err) => console.log(err));
+    return axios.delete(appointmentsURL).then(() => {
+      const newState = { ...state, appointments };
+      const days = updateSpots(newState);
+      setState({ ...newState, days });
+    });
   };
 
-  return { state, setDay, bookInterview, cancelInterview };
-};
+  return {
+    state,
+    bookInterview,
+    cancelInterview,
+    setDay,
+  };
+}
 
 export default useApplicationData;

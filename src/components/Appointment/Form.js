@@ -3,6 +3,7 @@ import InterviewerList from 'components/InterviewerList';
 import Button from 'components/Button';
 
 const Form = (props) => {
+  // States:
   const [student, setStudent] = useState(props.student || '');
   const [interviewer, setInterviewer] = useState(props.interviewer || null);
   const [error, setError] = useState('');
@@ -62,7 +63,7 @@ const Form = (props) => {
           <Button danger onClick={cancel}>
             Cancel
           </Button>
-          <Button confirm onClick={(e) => validate()}>
+          <Button confirm onClick={validate}>
             Save
           </Button>
         </section>
